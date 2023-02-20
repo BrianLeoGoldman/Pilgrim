@@ -10,6 +10,9 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
+        pygame.display.set_caption('Pilgrim')
+        icon = pygame.image.load('icon.png')
+        pygame.display.set_icon(icon)
 
     def run(self):
         while True:
