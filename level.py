@@ -4,6 +4,7 @@ from tile import Tile
 from player import Player
 from debug import debug
 
+
 class Level:
     def __init__(self):
         # get the display surface from anywhere in the code
@@ -32,7 +33,6 @@ class Level:
 
 class YSortCameraGroup(pygame.sprite.Group):
     def __init__(self):
-
         # general setup
         super().__init__()
         self.display_surface = pygame.display.get_surface()
@@ -44,6 +44,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         # getting the offset
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
-        for sprite in self.sprites():
+        # for sprite in self.sprites():
+        for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery):
             offset_position = sprite.rect.topleft - self.offset
             self.display_surface.blit(sprite.image, offset_position)
