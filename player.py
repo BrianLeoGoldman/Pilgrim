@@ -28,7 +28,10 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
 
-    def move(self, speed):
+    def move(self, speed):  # speed is given as a parameter via dependency injection
+        # first we normalize the direction vector in case we move in two directions at once
+        if self.direction.magnitude() != 0:  # magnitude is the length of the vector
+            self.direction = self.direction.normalize()  # we set the length of the vector to 1
         self.rect.center += self.direction * speed
 
     def update(self):
