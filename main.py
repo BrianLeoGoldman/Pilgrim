@@ -1,5 +1,6 @@
 import pygame, sys
 from settings import *
+from level import Level
 from debug import debug
 
 
@@ -13,6 +14,7 @@ class Game:
         pygame.display.set_caption('Pilgrim')
         icon = pygame.image.load('icon.png')
         pygame.display.set_icon(icon)
+        self.level = Level()
 
     def run(self):
         while True:
@@ -22,7 +24,8 @@ class Game:
                     sys.exit()
 
             self.screen.fill('black')
-            debug('Hello')
+            self.level.run()
+            # debug('Hello')
             pygame.display.update()
             self.clock.tick(FPS)
 
