@@ -13,6 +13,7 @@ class Player(pygame.sprite.Sprite):
 
         # graphics setup
         self.import_player_assets()
+        self.status = 'down'
 
         # movement
         self.direction = pygame.math.Vector2()  # it has position x=0 and y=0
@@ -33,7 +34,6 @@ class Player(pygame.sprite.Sprite):
         for animation in self.animations.keys():
             full_path = character_path + animation
             self.animations[animation] = import_folder(full_path)
-        print(self.animations)
 
     def input(self):
         keys = pygame.key.get_pressed()
@@ -41,15 +41,19 @@ class Player(pygame.sprite.Sprite):
         # movement input
         if keys[pygame.K_UP]:
             self.direction.y = -1
+            self.status = 'up'
         elif keys[pygame.K_DOWN]:
             self.direction.y = 1
+            self.status = 'down'
         else:
             self.direction.y = 0
 
         if keys[pygame.K_RIGHT]:
             self.direction.x = 1
+            self.status = 'right'
         elif keys[pygame.K_LEFT]:
             self.direction.x = -1
+            self.status = 'left'
         else:
             self.direction.x = 0
 
@@ -64,6 +68,13 @@ class Player(pygame.sprite.Sprite):
             self.attacking = True
             self.attack_time = pygame.time.get_ticks()
             print('magic')
+
+    def get_status(self):
+
+        # idle status
+        if self.direction.x == 0 and self.direction.y == 0:
+            if not 'idle' in self.status:
+                self.status = self.status + '_idle'
 
     def move(self, speed):  # speed is given as a parameter via dependency injection
         # first we normalize the direction vector in case we move in two directions at once
@@ -101,5 +112,5 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.input()
         self.cooldown()
+        self.get_status()
         self.move(self.speed)
-
