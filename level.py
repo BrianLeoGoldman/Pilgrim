@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from support import import_csv_layout
+from support import *
 from tile import Tile
 from player import Player
 from debug import debug
@@ -17,7 +17,12 @@ class Level:
 
     def create_map(self):
         layouts = {
-            'boundary': import_csv_layout('./map/map_FloorBlocks.csv')
+            'boundary': import_csv_layout('./map/map_FloorBlocks.csv'),
+            'grass': import_csv_layout('./map/map_Grass.csv'),
+            'object': import_csv_layout('./map/map_Objects.csv')
+        }
+        graphics = {
+            'grass': import_folder('./graphics/Grass')
         }
         for style, layout in layouts.items():
             for row_index, row in enumerate(layout):
@@ -26,7 +31,13 @@ class Level:
                         x = col_index * TILESIZE
                         y = row_index * TILESIZE
                         if style == 'boundary':
-                            Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'invisible')
+                            Tile((x, y), [self.obstacle_sprites], 'invisible')
+                        if style == 'grass':
+                            #  create a grass tile
+                            pass
+                        if style == 'object':
+                            #  create an object tile
+                            pass
         #         if col == 'x':
         #             Tile((x, y), [self.visible_sprites, self.obstacle_sprites])
         #         if col == 'p':
