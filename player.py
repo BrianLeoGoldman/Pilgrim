@@ -73,8 +73,22 @@ class Player(pygame.sprite.Sprite):
 
         # idle status
         if self.direction.x == 0 and self.direction.y == 0:
-            if not 'idle' in self.status:
+            if not 'idle' in self.status and not 'attack' in self.status:
                 self.status = self.status + '_idle'
+
+        # attack status
+        if self.attacking:
+            self.direction.x = 0
+            self.direction.y = 0
+            if not 'attack' in self.status:
+                if 'idle' in self.status:
+                    # override idle
+                    self.status = self.status.replace('_idle', '_attack')
+                else:
+                    self.status = self.status + '_attack'
+        else:
+            if 'attack' in self.status:
+                self.status = self.status.replace('_attack', '')
 
     def move(self, speed):  # speed is given as a parameter via dependency injection
         # first we normalize the direction vector in case we move in two directions at once
