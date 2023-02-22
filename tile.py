@@ -9,5 +9,9 @@ class Tile(pygame.sprite.Sprite):
         self.sprite_type = sprite_type
         # self.image = pygame.image.load('./graphics/test/stone 1.png').convert_alpha()
         self.image = surface
-        self.rect = self.image.get_rect(topleft=pos)
+        if sprite_type == 'object':
+            #  do an offset
+            self.rect = self.image.get_rect(topleft = (pos[0], pos[1] - TILESIZE))
+        else:
+            self.rect = self.image.get_rect(topleft=pos)
         self.hitbox = self.rect.inflate(0, -10)  # center point remains at the same position
