@@ -31,6 +31,12 @@ weapon_data = {
     'sai': {'cooldown': 80, 'damage': 10, 'graphic': './graphics/weapons/sai/full.png'}
 }
 
+# magic
+magic_data = {
+    'flame': {'strength': 5, 'cost': 20, 'graphic': './graphics/particles/flame/fire.png'},
+    'heal': {'strength': 20, 'cost': 10, 'graphic': './graphics/particles/heal/heal.png'}
+}
+
 # WORLD_MAP IS NOT REQUIRED ANY MORE
 WORLD_MAP = [
     ['x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'],
