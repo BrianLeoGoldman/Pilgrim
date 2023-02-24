@@ -50,6 +50,7 @@ class Level:
                             #  create a grass tile
                             random_grass_image = choice(graphics['grass'])
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'grass', random_grass_image)
+                            # TODO: remove self.obstacle_sprites so the grass does not have collision
                         if style == 'object':
                             #  create an object tile
                             surf = graphics['objects'][int(col)]
