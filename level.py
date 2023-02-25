@@ -6,6 +6,7 @@ from player import Player
 from debug import debug
 from random import choice
 
+from ui import UI
 from weapon import Weapon
 
 
@@ -17,10 +18,15 @@ class Level:
         # sprite group setup
         self.visible_sprites = YSortCameraGroup()
         self.obstacle_sprites = pygame.sprite.Group()
-        self.create_map()
 
         # attack sprites
         self.current_attack = None
+
+        # sprite setup
+        self.create_map()
+
+        # user interface
+        self.ui = UI()
 
     def create_map(self):
         layouts = {
@@ -44,6 +50,7 @@ class Level:
                             #  create a grass tile
                             random_grass_image = choice(graphics['grass'])
                             Tile((x, y), [self.visible_sprites, self.obstacle_sprites], 'grass', random_grass_image)
+                            # TODO: remove self.obstacle_sprites so the grass does not have collision
                         if style == 'object':
                             #  create an object tile
                             surf = graphics['objects'][int(col)]
@@ -52,10 +59,21 @@ class Level:
         #             Tile((x, y), [self.visible_sprites, self.obstacle_sprites])
         #         if col == 'p':
         #             self.player = Player((x, y), [self.visible_sprites], self.obstacle_sprites)
-        self.player = Player((2000, 1430), [self.visible_sprites], self.obstacle_sprites, self.create_attack, self.destroy_attack)
+        self.player = Player(
+            (2000, 1430),
+            [self.visible_sprites],
+            self.obstacle_sprites,
+            self.create_attack,
+            self.destroy_attack,
+            self.create_magic)
 
     def create_attack(self):
         self.current_attack = Weapon(self.player, [self.visible_sprites])
+
+    def create_magic(self, style, strength, cost):
+        print(style)
+        print(strength)
+        print(cost)
 
     def destroy_attack(self):
         if self.current_attack:
@@ -66,8 +84,11 @@ class Level:
         # update and draw the game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+
         # debug(self.player.direction)
-        debug(self.player.status)
+        # debug(self.player.status)
+
+        self.ui.display(self.player)
 
 
 class YSortCameraGroup(pygame.sprite.Group):
