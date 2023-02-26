@@ -70,12 +70,15 @@ class Level:
                                     self.create_magic)
                             else:
                                 # TODO create function to determine enemy based on code
-                                if col == '390': monster_name = 'bamboo'
-                                elif col == '391': monster_name = 'spirit'
-                                elif col == '392': monster_name = 'raccoon'
-                                else: monster_name = 'squid'
-                                Enemy(monster_name, (x, y),[self.visible_sprites], self.obstacle_sprites)
-
+                                if col == '390':
+                                    monster_name = 'bamboo'
+                                elif col == '391':
+                                    monster_name = 'spirit'
+                                elif col == '392':
+                                    monster_name = 'raccoon'
+                                else:
+                                    monster_name = 'squid'
+                                Enemy(monster_name, (x, y), [self.visible_sprites], self.obstacle_sprites)
 
     def create_attack(self):
         self.current_attack = Weapon(self.player, [self.visible_sprites])
@@ -120,7 +123,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         # getting the offset
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
-        
+
         # drawing the floor
         floor_offset_pos = self.floor_rect.topleft - self.offset
         self.display_surface.blit(self.floor_surf, floor_offset_pos)
@@ -131,6 +134,7 @@ class YSortCameraGroup(pygame.sprite.Group):
             self.display_surface.blit(sprite.image, offset_position)
 
     def enemy_update(self, player):
-        enemy_sprites = [sprite for sprite in self.sprites() if hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
+        enemy_sprites = [sprite for sprite in self.sprites() if
+                         hasattr(sprite, 'sprite_type') and sprite.sprite_type == 'enemy']
         for enemy in enemy_sprites:
-            enemy.enemy_update(player)
+            enemy.enemy_update(player)  # TODO: couldn't we call update instead? (passing player as argument)
