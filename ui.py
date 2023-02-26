@@ -12,6 +12,7 @@ class UI:
         self.health_bar_rect = pygame.Rect(10, 10, HEALTH_BAR_WIDTH, BAR_HEIGHT)
         self.energy_bar_rect = pygame.Rect(10, 34, ENERGY_BAR_WIDTH, BAR_HEIGHT)
 
+        # TODO: create general function to replace creation of weapon_graphics and magic_graphics lists
         # convert weapon dictionary
         self.weapon_graphics = []
         for weapon in weapon_data.values():
@@ -59,6 +60,7 @@ class UI:
             pygame.draw.rect(self.display_surface, UI_BORDER_COLOR, bg_rect, 3)
         return bg_rect
 
+    # TODO: replace weapon_overlay and magic_overlay with one general method
     def weapon_overlay(self, weapon_index, has_switched):
         bg_rect = self.selection_box(10, 630, has_switched)  # weapon
         weapon_surf = self.weapon_graphics[weapon_index]
