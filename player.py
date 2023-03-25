@@ -157,7 +157,7 @@ class Player(Entity):
                 self.can_switch_magic = True
 
         if not self.vulnerable:
-            if current_time - self.hurt_time >=  self.invulnerability_duration:
+            if current_time - self.hurt_time >= self.invulnerability_duration:
                 self.vulnerable = True
 
     def animate(self):
@@ -169,11 +169,17 @@ class Player(Entity):
             self.frame_index = 0
 
         # set the image
+        # TODO: setting the image logic is repeated in enemy class!
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center=self.hitbox.center)
 
         # flicker
-
+        # TODO: flicker logic is repeated in enemy class!
+        if not self.vulnerable:
+            alpha = self.wave_value()
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
 
     def get_full_weapon_damage(self):
         base_damage = self.stats['attack']
