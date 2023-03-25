@@ -6,7 +6,7 @@ from support import *
 
 class Enemy(Entity):
 
-    def __init__(self, monster_name, position, groups, obstacle_sprites):
+    def __init__(self, monster_name, position, groups, obstacle_sprites, damage_player):
 
         # general setup
         super().__init__(groups)
@@ -38,6 +38,7 @@ class Enemy(Entity):
         self.can_attack = True
         self.attack_time = None
         self.attack_cooldown = 400  # TODO: add cooldown time for each enemy into monster_data
+        self.damage_player = damage_player  # We pass the function in the constructor from the level, to use it later
 
         # Invincibility timer
         self.vulnerable = True
@@ -73,8 +74,8 @@ class Enemy(Entity):
 
     def actions(self, player):
         if self.status == 'attack':
-            print('attack')
             self.attack_time = pygame.time.get_ticks()
+            self.damage_player(self.attack_damage, self.attack_type)
         elif self.status == 'move':
             self.direction = self.get_player_distance_direction(player)[1]  # if the player is in the notice radius, enemy should move towards him/her
         else:
@@ -91,6 +92,7 @@ class Enemy(Entity):
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)  # we move the hitbox, not the rectangle
 
+        # flicker
         if not self.vulnerable:
             alpha = self.wave_value()
             self.image.set_alpha(alpha)
