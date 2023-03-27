@@ -187,9 +187,16 @@ class Player(Entity):
         # TODO: we clearly need a player property called weapon_info!
         return base_damage + weapon_damage
 
+    def energy_recovery(self):
+        if self.energy < self.stats['energy']:
+            self.energy += 0.01
+        else:
+            self.energy = self.stats['energy']
+
     def update(self):
         self.input()
         self.cooldown()
         self.get_status()
         self.animate()
         self.move(self.speed)
+        self.energy_recovery()
