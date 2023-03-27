@@ -6,7 +6,7 @@ from support import *
 
 class Enemy(Entity):
 
-    def __init__(self, monster_name, position, groups, obstacle_sprites, damage_player):
+    def __init__(self, monster_name, position, groups, obstacle_sprites, damage_player, trigger_death_particles):
 
         # general setup
         super().__init__(groups)
@@ -39,6 +39,7 @@ class Enemy(Entity):
         self.attack_time = None
         self.attack_cooldown = 400  # TODO: add cooldown time for each enemy into monster_data
         self.damage_player = damage_player  # We pass the function in the constructor from the level, to use it later
+        self.trigger_death_particles = trigger_death_particles
 
         # Invincibility timer
         self.vulnerable = True
@@ -122,6 +123,7 @@ class Enemy(Entity):
     def check_death(self):
         if self.health <= 0:
             self.kill()
+            self.trigger_death_particles(self.rect.center, self.monster_name)
 
     def hit_reaction(self):
         if not self.vulnerable:

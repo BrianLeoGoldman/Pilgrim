@@ -20,7 +20,7 @@ class AnimationPlayer:
 
             # monster deaths
             'squid': import_folder('./graphics/particles/smoke_orange'),
-            'racoon': import_folder('./graphics/particles/racoon'),
+            'raccoon': import_folder('./graphics/particles/raccoon'),
             'spirit': import_folder('./graphics/particles/nova'),
             'bamboo': import_folder('./graphics/particles/bamboo'),
 
@@ -50,6 +50,10 @@ class AnimationPlayer:
 
     def create_grass_particles(self, pos, groups):
         animation_frames = choice(self.frames['leaf'])
+        ParticleEffect(pos, animation_frames, groups)
+
+    def create_particles(self, animation_type, pos, groups):
+        animation_frames = self.frames[animation_type]
         ParticleEffect(pos, animation_frames, groups)
 
 
