@@ -60,6 +60,9 @@ class AnimationPlayer:
 class ParticleEffect(pygame.sprite.Sprite):
     def __init__(self, pos, animation_frames, groups):
         super().__init__(groups)
+        self.sprite_type = 'magic'
+        # If there are more spells, sprite_type should be passed as parameter.
+        # Or we can have a new ParticleEffect class that inherits from this one
         self.frame_index = 0
         self.animation_speed = 0.15
         self.frames = animation_frames
