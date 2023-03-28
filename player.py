@@ -191,7 +191,7 @@ class Player(Entity):
 
     def get_full_magic_damage(self):
         base_damage = self.stats['magic']
-        spell_damage = self.magic['strength']
+        spell_damage = magic_data[self.magic]['strength']
         return base_damage + spell_damage
 
     def energy_recovery(self):
