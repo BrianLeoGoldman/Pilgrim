@@ -9,7 +9,7 @@ from tile import Tile
 from player import Player
 from debug import debug
 from random import choice, randint
-
+from upgrade import Upgrade
 from ui import UI
 from weapon import Weapon
 
@@ -18,6 +18,7 @@ class Level:
     def __init__(self):
         # get the display surface from anywhere in the code
         self.display_surface = pygame.display.get_surface()
+        self.game_paused = False
 
         # sprite group setup
         self.visible_sprites = YSortCameraGroup()
@@ -33,6 +34,7 @@ class Level:
 
         # user interface
         self.ui = UI()
+        self.upgrade = Upgrade(self.player)
 
         # particles
         self.animation_player = AnimationPlayer()  # this will run a particle effect
@@ -140,15 +142,23 @@ class Level:
     def add_exp(self, amount):
         self.player.exp += amount
 
+    def toggle_menu(self):
+        self.game_paused = not self.game_paused
+
     def run(self):
-        # update and draw the game
-        self.visible_sprites.custom_draw(self.player)
-        self.visible_sprites.update()
-        self.visible_sprites.enemy_update(self.player)
-        # debug(self.player.direction)
-        # debug(self.player.status)
-        self.player_attack_logic()
-        self.ui.display(self.player)
+        # This should be executed all the time:
+        self.visible_sprites.custom_draw(self.player)  # Draw the game (visible sprites)
+        self.ui.display(self.player)  # Draw the player UI
+        # PAUSE MECHANIC:
+        if self.game_paused:  # This should be executed if the game is paused
+            # display upgrade menu
+            self.upgrade.display()
+        else:  # This should be executed if the game is not paused
+            self.visible_sprites.update()  # Update the game (visible sprites)
+            self.visible_sprites.enemy_update(self.player)
+            self.player_attack_logic()
+            # debug(self.player.direction)
+            # debug(self.player.status)
 
 
 class YSortCameraGroup(pygame.sprite.Group):
