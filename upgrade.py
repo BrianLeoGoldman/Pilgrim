@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 
+
 class Upgrade:
     def __init__(self, player):
         # General setup
@@ -8,6 +9,7 @@ class Upgrade:
         self.player = player
         self.attribute_nr = len(player.stats)
         self.attribute_names = list(player.stats.keys())
+        self.max_values = list(player.max_stats.values())
         self.font = pygame.font.Font(UI_FONT, UI_FONT_SIZE)
 
         # item creation
@@ -60,15 +62,32 @@ class Upgrade:
         # self.display_surface.fill('black')
         self.input()
         self.selection_cooldown()
-        for item in self.item_list:
-            item.display(self.display_surface, 0, 'test', 1, 2, 3)
+        for index, item in enumerate(self.item_list):
+            # get attributes
+            name = self.attribute_names[index]
+            value = self.player.get_value_by_index(index)
+            max_value = self.max_values[index]
+            cost = self.player.get_cost_by_index(index)
+            item.display(self.display_surface, self.selection_index, name, value, max_value, cost)
 
 
 class Item:  # Represents one box from the menu
     def __init__(self, l, t, w, h, index, font):
         self.rect = pygame.Rect(l, t, w, h)
-        self. index = index
+        self.index = index
         self.font = font
+
+    def display_names(self, surface, name, cost, selected):
+        # title
+        title_surf = self.font.render(name, False, TEXT_COLOR)
+        title_rect = title_surf.get_rect(midtop=self.rect.midtop + pygame.math.Vector2(0, 20))
+        # cost
+        cost_surf = self.font.render(f'{int(cost)}', False, TEXT_COLOR)
+        cost_rect = cost_surf.get_rect(midbottom=self.rect.midbottom + pygame.math.Vector2(0, -20))
+        # draw
+        surface.blit(title_surf, title_rect)
+        surface.blit(cost_surf, cost_rect)
 
     def display(self, surface, selection_num, name, value, max_value, cost):
         pygame.draw.rect(surface, UI_BG_COLOR, self.rect)
+        self.display_names(surface, name, cost, False)
