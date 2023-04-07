@@ -90,6 +90,24 @@ class Item:  # Represents one box from the menu
         surface.blit(title_surf, title_rect)
         surface.blit(cost_surf, cost_rect)
 
+    def display_bar(self, surface, value, max_value, selected):
+
+        # drawing setup
+        top = self.rect.midtop + pygame.math.Vector2(0, 60)
+        bottom = self.rect.midbottom - pygame.math.Vector2(0, 60)
+        color = BAR_COLOR_SELECTED if selected else BAR_COLOR
+
+        # bar setup
+        full_height = bottom[1] - top[1]
+        # The origin of a window is in the top left, so the bottom is the higher number
+        relative_number = (value / max_value) * full_height
+        # If value or health is 100 and max_value or max_health is 300, relative_number would be 0.3 * full_height
+        # We multiply by full_height to turn it into a pixel measurement
+        value_rect = pygame.Rect(top[0] - 15, bottom[1] - relative_number, 30, 10)
+        # draw elements
+        pygame.draw.line(surface, color, top, bottom, 5)
+        pygame.draw.rect(surface, color, value_rect)
+
     def display(self, surface, selection_num, name, value, max_value, cost):
         is_selected = self.index == selection_num
         if is_selected:
@@ -99,3 +117,4 @@ class Item:  # Represents one box from the menu
             pygame.draw.rect(surface, UI_BG_COLOR, self.rect)
             pygame.draw.rect(surface, UI_BORDER_COLOR, self.rect, 4)
         self.display_names(surface, name, cost, is_selected)
+        self.display_bar(surface, value, max_value, is_selected)
