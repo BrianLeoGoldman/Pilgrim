@@ -26,7 +26,7 @@ class Game:
                     if event.key == pygame.K_m:
                         self.level.toggle_menu()
 
-            self.screen.fill('black')
+            self.screen.fill(WATER_COLOR)  # This is the background color behind the level
             self.level.run()
             # debug('Hello')
             pygame.display.update()
