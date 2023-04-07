@@ -37,7 +37,7 @@ class Upgrade:
             if keys[pygame.K_SPACE]:
                 self.can_move = False
                 self.selection_time = pygame.time.get_ticks()
-                print(self.selection_index)
+                self.item_list[self.selection_index].trigger(self.player)
 
     def selection_cooldown(self):
         if not self.can_move:
@@ -107,6 +107,19 @@ class Item:  # Represents one box from the menu
         # draw elements
         pygame.draw.line(surface, color, top, bottom, 5)
         pygame.draw.rect(surface, color, value_rect)
+
+    def trigger(self, player):
+        upgrade_attribute = list(player.stats.keys())[self.index]
+        current_value = player.stats[upgrade_attribute]
+        max_value = player.max_stats[upgrade_attribute]
+        upgrade_cost = player.upgrade_cost[upgrade_attribute]
+
+        if player.exp >= upgrade_cost and current_value < max_value:
+            player.exp -= upgrade_cost
+            player.stats[upgrade_attribute] *= 1.2
+            player.upgrade_cost[upgrade_attribute] *= 1.4
+        if current_value > max_value:
+            player.stats[upgrade_attribute] = max_value
 
     def display(self, surface, selection_num, name, value, max_value, cost):
         is_selected = self.index == selection_num

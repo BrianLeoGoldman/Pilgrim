@@ -45,7 +45,7 @@ class Player(Entity):
         self.health = self.stats['health']
         self.energy = self.stats['energy']
         self.exp = 500
-        self.speed = self.stats['speed']
+        self.speed = self.stats['speed']  # TODO: what is the point of this property!? It's never used!
 
         # damage timer
         self.vulnerable = True
@@ -211,5 +211,5 @@ class Player(Entity):
         self.cooldown()
         self.get_status()
         self.animate()
-        self.move(self.speed)
+        self.move(self.stats['speed'])
         self.energy_recovery()
